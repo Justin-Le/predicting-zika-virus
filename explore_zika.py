@@ -22,6 +22,12 @@ categoricals = ['VECTOR', 'SOURCE_TYPE', 'LOCATION_TYPE',
 for c in categoricals:
     data[c] = pd.factorize(np.array(data[c]))[0]
 
+for c in data.columns:
+    counts = data[c].value_counts()
+    print("\nFrequency of each value of %s:\n" % c)
+    print(counts.head())
+    print("\nUnique values of %s: %i\n" % (c, len(counts)))
+
 sns.heatmap(data.corr())
 
 grid = sns.FacetGrid(data, hue='VECTOR')

@@ -26,6 +26,14 @@ def extract_features(data, target):
 
     data['X_neg110_neg50_Y_neg40_30']= X_neg110_neg50*Y_neg40_30
 
+    """
+    # GAUL_AD0 == 64 encoded (COUNTRY == Taiwan)
+    data['country_is_taiwan'] = np.where(data['GAUL_AD0'] == 64, 1, 0)
+
+    # GAUL_AD0 == 56 encoded (COUNTRY == Brazil)
+    data['country_is_brazil'] = np.where(data['GAUL_AD0'] == 56, 1, 0)
+    """
+
     return data, target
 
 if __name__ == "__main__":

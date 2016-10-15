@@ -28,20 +28,19 @@ def main():
     y = data.ix[:, 0]
 
     # logistic_cv(X, y)
-    xgb_cv(X, y)
+    # xgb_cv(X, y)
 
-    seed = 15
+    seed = 1
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
     xgb_test(X_train, y_train, X_test, y_test)
 
-    # data = data.drop(['STATUS', 'YEAR', 'GAUL_AD0', 'SOURCE_TYPE', 'POLYGON_ADMIN', 'LOCATION_TYPE'], axis=1)
-    # X = data.ix[:, 1:]
-    # y = data.ix[:, 0]
-
     X, y = extract_features(X, y)
     
+    # X = X.drop('GAUL_AD0', axis=1)
+    print(X.head())
+
     # logistic_cv(X, y)
-    xgb_cv(X, y)
+    # xgb_cv(X, y)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
     xgb_test(X_train, y_train, X_test, y_test)
@@ -115,7 +114,9 @@ def xgb_cv(X, y):
     print("="*80)
 
 def xgb_test(X_train, y_train, X_test, y_test):
-    bst = XGBClassifier(n_estimators=100, #70
+    n_estimators = 150
+
+    bst = XGBClassifier(n_estimators=n_estimators, #70
                         max_depth=3, 
                         min_child_weight=5, 
                         gamma=0.5, 
@@ -136,6 +137,8 @@ def xgb_test(X_train, y_train, X_test, y_test):
     print("\nF1 score: %.4f" % f1_score(y_test, pred))
     print("\nAccuracy: %.4f" % accuracy_score(y_test, pred))
     print("="*80)
+
+    print(cross_val_score(bst, X_train, y_train, cv=10, scoring="roc_auc").mean())
 
 if __name__ == "__main__":
     main()
